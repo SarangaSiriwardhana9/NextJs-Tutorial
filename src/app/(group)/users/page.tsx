@@ -1,9 +1,10 @@
+'use client'
 import { UserTable } from "@/components/pages/users/UserTable";
 
-export default function Profile() {
+export default function Users() {
   return (
-    <div className="flex flex-col items-center justify-center ">
-      <h1 className="mb-4  mt-10 text-2xl font-bold  "> All Users </h1>
+    <div className="   ">
+      <h1 className="mb-4 text-center   mt-10 text-4xl text-slate-700 font-serif font-bold "> All Users </h1>
       <div className="w-full max-w-4xl">
         <UserTable />
       </div>
