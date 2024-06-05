@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -17,20 +17,47 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs";
-
 import { useRouter } from 'next/navigation';
+import { useSession, signIn } from 'next-auth/react';
 
 export function TabsDemo() {
   const router = useRouter();
-
   const [signupName, setSignupName] = useState('');
   const [signupEmail, setSignupEmail] = useState('');
   const [signupPassword, setSignupPassword] = useState('');
-
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
+  const [error, setError] = useState("");
+
+  const { data: session, status: sessionStatus } = useSession();
+
+  useEffect(() => {
+    if (sessionStatus === "authenticated") {
+      router.replace("/dashboard");
+    }
+  }, [sessionStatus, router]);
+
+  const isValidEmail = (email: string) => {
+    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+    return emailRegex.test(email);
+  };
 
   const handleSignup = async () => {
+    if (!signupName || !signupEmail || !signupPassword) {
+      setError("All fields are required");
+      return;
+    }
+
+    if (!isValidEmail(signupEmail)) {
+      setError("Email is invalid");
+      return;
+    }
+
+    if (signupPassword.length < 8) {
+      setError("Password must be at least 8 characters");
+      return;
+    }
+
     try {
       const res = await fetch("/api/register", {
         method: "POST",
@@ -43,30 +70,54 @@ export function TabsDemo() {
           password: signupPassword,
         }),
       });
-  
+
       if (res.status === 400) {
-        console.error("This email is already registered");
-        // Handle error message display or redirection
+        setError("This email is already registered");
+        return;
       }
-  
+
       if (res.status === 201) {
-        console.log("User registered successfully");
-        // Handle success message display or redirection
+        setError("");
+        router.push("/login");
       }
     } catch (error) {
-      console.error("Error registering user:", error);
-      // Handle error message display or redirection
+      setError("Error, try again");
+      console.log(error);
     }
   };
-  
-  const handleLogin = () => {
-    
-    console.log('Login:', loginEmail, loginPassword);
-   
+
+  const handleLogin = async (e: any) => {
+    e.preventDefault();
+    if (!isValidEmail(loginEmail)) {
+      setError("Email is invalid");
+      return;
+    }
+
+    if (!loginPassword || loginPassword.length < 8) {
+      setError("Password is invalid");
+      return;
+    }
+
+    const res = await signIn("credentials", {
+      redirect: false,
+      email: loginEmail,
+      password: loginPassword,
+    });
+
+    if (res?.error) {
+      setError("Invalid email or password");
+    } else {
+      setError("");
+      if (res?.url) router.replace("/dashboard");
+    }
   };
 
+  if (sessionStatus === "loading") {
+    return <h1>Loading...</h1>;
+  }
+
   return (
-    <Tabs defaultValue="login"  className="w-[500px] ">
+    <Tabs defaultValue="login" className="w-[500px]">
       <TabsList className="grid w-full grid-cols-2">
         <TabsTrigger value="login">Login</TabsTrigger>
         <TabsTrigger value="signup">Signup</TabsTrigger>
@@ -92,6 +143,7 @@ export function TabsDemo() {
           <CardFooter>
             <Button onClick={handleLogin}>Login</Button>
           </CardFooter>
+          {error && <p className="text-red-500">{error}</p>}
         </Card>
       </TabsContent>
       <TabsContent value="signup">
@@ -117,17 +169,18 @@ export function TabsDemo() {
           <CardFooter>
             <Button onClick={handleSignup}>Signup</Button>
           </CardFooter>
+          {error && <p className="text-red-500">{error}</p>}
         </Card>
       </TabsContent>
     </Tabs>
   );
 }
 
-export default function Login() {
+export default function Auth() {
   return (
-    <div className="flex justify-center  items-center h-screen bg-gray-100">
+    <div className="flex justify-center items-center h-screen bg-gray-100">
       <div className=" ">
-        <div className="w-full  shadow-xl  max-w-8xl">
+        <div className="w-full shadow-xl max-w-8xl">
           <TabsDemo />
         </div>
       </div>
