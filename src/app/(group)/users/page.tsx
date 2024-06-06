@@ -1,12 +1,73 @@
 'use client'
-import { UserTable } from "@/components/pages/users/UserTable";
+// Import necessary dependencies
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
+// Define the Users component
 export default function Users() {
+  // Define state variables to manage users, loading state, and errors
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  
+  // Get the session status and router
+  const { data: session, status: sessionStatus } = useSession();
+  const router = useRouter();
+
+  // Fetch users when the component mounts
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        // Fetch users from the API
+        const response = await fetch('/api/Getusers');
+        // Check if the response is successful
+        if (response.ok) {
+          // Parse the JSON response
+          const data = await response.json();
+          // Update the state with the fetched users
+          setUsers(data);
+          // Log the users' data to the console
+          console.log('Users:', data);
+        } else {
+          // If the response is not successful, throw an error
+          throw new Error('Failed to fetch users');
+        }
+      } catch (error) {
+        // If an error occurs, set the error state
+        setError(error.message);
+      } finally {
+        // Set loading to false after fetching
+        setLoading(false);
+      }
+    };
+
+    // Call the fetchUsers function
+    fetchUsers();
+  }, []);
+
+  // Render the component
   return (
     <div className="   ">
-      <h1 className="mb-4 text-center   mt-10 text-4xl text-slate-700 font-serif font-bold "> All Users </h1>
+      <h1 className="mb-4 text-center   mt-10 text-4xl text-slate-700 font-serif font-bold ">
+        All Users
+      </h1>
       <div className="w-full max-w-4xl">
-        <UserTable />
+        {/* Check if there is an error */}
+        {error && <p>Error: {error}</p>}
+        {/* Check if the data is still loading */}
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          // Render the list of users
+          <ul>
+            {users.map(user => (
+              <li key={user._id} className="flex items-center justify-between p-4 border-b border-gray-200">
+                
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );

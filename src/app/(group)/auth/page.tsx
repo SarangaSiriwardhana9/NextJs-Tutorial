@@ -23,6 +23,7 @@ import { useSession, signIn } from 'next-auth/react';
 export function TabsDemo() {
   const router = useRouter();
   const [signupName, setSignupName] = useState('');
+  const [signupMobileNo, setSignupMobileNo] = useState('');
   const [signupEmail, setSignupEmail] = useState('');
   const [signupPassword, setSignupPassword] = useState('');
   const [loginEmail, setLoginEmail] = useState('');
@@ -43,7 +44,7 @@ export function TabsDemo() {
   };
 
   const handleSignup = async () => {
-    if (!signupName || !signupEmail || !signupPassword) {
+    if (!signupName || !signupEmail|| !signupMobileNo || !signupPassword) {
       setError("All fields are required");
       return;
     }
@@ -67,6 +68,7 @@ export function TabsDemo() {
         body: JSON.stringify({
           name: signupName,
           email: signupEmail,
+          mobileNo: signupMobileNo,
           password: signupPassword,
         }),
       });
@@ -153,7 +155,7 @@ export function TabsDemo() {
         </Card>
       </TabsContent>
       <TabsContent value="signup">
-        <Card className="h-[400px]">
+        <Card className="h-[500px]">
           <CardHeader>
             <CardTitle>Signup</CardTitle>
             <CardDescription>Create a new account.</CardDescription>
@@ -166,6 +168,10 @@ export function TabsDemo() {
             <div className="space-y-1">
               <Label htmlFor="signupEmail">Email</Label>
               <Input id="signupEmail" value={signupEmail} onChange={(e) => setSignupEmail(e.target.value)} />
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="signupMobileNo">Mobile No</Label>
+              <Input id="signupMobileNo" value={signupMobileNo} onChange={(e) => setSignupMobileNo(e.target.value)} />
             </div>
             <div className="space-y-1">
               <Label htmlFor="signupPassword">Password</Label>
