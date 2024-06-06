@@ -1,5 +1,4 @@
-"use client";
-import { User, Mail, CreditCard, Bell, Settings, Shield, FileText,LogOut,PackageSearch,CookingPot  } from "lucide-react";
+import { User, Mail, CreditCard, Bell, Settings, Shield, FileText, LogOut, PackageSearch, CookingPot } from "lucide-react";
 import UserItem from "./UserItem";
 import Link from "next/link";
 import {
@@ -9,9 +8,14 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command";
-import { link } from "fs";
+
+import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function Sidebar() {
+  const { data: session }: any = useSession();
+  const router = useRouter();
+
   const menuList = [
     {
       group: "General",
@@ -28,7 +32,7 @@ export default function Sidebar() {
         },
         {
           link: "/allProducts",
-          icon: <CookingPot  />,
+          icon: <CookingPot />,
           text: "All Products",
         },
         {
@@ -70,13 +74,18 @@ export default function Sidebar() {
     },
   ];
 
+  const handleLogout = async () => {
+    await signOut();
+    window.location.href = "/auth";
+  };
+
   return (
-    <div className="w-[250px] flex flex-col gap-4 min-w-[300px] border-r bg-gradient-to-t to-[#fbfffe] via-[#cdffee] from-[#b8ffe5]  p-4">
+    <div className="w-[250px] flex flex-col gap-4 min-w-[300px] border-r bg-gradient-to-t to-[#fbfffe] via-[#cdffee] from-[#b8ffe5] p-4">
       <div>
         <UserItem />
       </div>
       <div className="grow">
-        <Command style={{ overflow: 'visible'  }} className="min-h-[500px] bg-inherit "> 
+        <Command style={{ overflow: 'visible' }} className="min-h-[500px] bg-inherit ">
           <CommandList style={{ overflow: 'visible' }}>
             {menuList.map((menu, key) => (
               <CommandGroup key={key} heading={menu.group}>
@@ -94,7 +103,9 @@ export default function Sidebar() {
           </CommandList>
         </Command>
       </div>
-      <div className="flex flex-row gap-2 cursor-pointer"><LogOut />Logout</div>
+      <div onClick={handleLogout}>
+        <div className="flex flex-row gap-2 mb-10 text-slate-600 font-bold cursor-pointer"><LogOut />Logout</div>
+      </div>
     </div>
   );
 }

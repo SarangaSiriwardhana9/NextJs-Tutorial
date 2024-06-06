@@ -1,5 +1,10 @@
 'use client'
+import { signOut, useSession } from "next-auth/react";
+
 export default function UserItem() {
+    const { data: session }: any = useSession();
+    console.log(session?.user?.name);
+console.log(session?.user?.email);
     return(
         <div className="flex items-center justify-start gap-2 border rounded-[16px] p-2">
             {/* name and email */}
@@ -8,9 +13,9 @@ export default function UserItem() {
             </div>
 
             <div className="grow">
-            <p className="text-lg font-bold">John Doe</p>
+            <p className="text-lg font-bold"> {session?.user?.name} </p>
             <p className="text-sm text-gray-500">
-                Jhon@gmail.com
+                {session?.user?.email}
             </p>
             </div>
         </div>

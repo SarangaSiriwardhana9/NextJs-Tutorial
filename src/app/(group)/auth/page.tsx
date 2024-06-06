@@ -33,7 +33,7 @@ export function TabsDemo() {
 
   useEffect(() => {
     if (sessionStatus === "authenticated") {
-      router.replace("/dashboard");
+      router.replace("/");
     }
   }, [sessionStatus, router]);
 
@@ -78,7 +78,8 @@ export function TabsDemo() {
 
       if (res.status === 201) {
         setError("");
-        router.push("/login");
+       //refresh the page
+      window.location.reload();
       }
     } catch (error) {
       setError("Error, try again");
@@ -92,25 +93,30 @@ export function TabsDemo() {
       setError("Email is invalid");
       return;
     }
-
+  
     if (!loginPassword || loginPassword.length < 8) {
       setError("Password is invalid");
       return;
     }
-
+  
     const res = await signIn("credentials", {
       redirect: false,
       email: loginEmail,
       password: loginPassword,
     });
-
+  
     if (res?.error) {
       setError("Invalid email or password");
     } else {
       setError("");
-      if (res?.url) router.replace("/dashboard");
+      // go to / page
+      if (res?.url) {
+        router.push("/"); // Ensure the URL is in quotes
+        
+      }
     }
   };
+  
 
   if (sessionStatus === "loading") {
     return <h1>Loading...</h1>;
@@ -168,8 +174,10 @@ export function TabsDemo() {
           </CardContent>
           <CardFooter>
             <Button onClick={handleSignup}>Signup</Button>
+
+            {error && <p className="text-red-500">{error}</p>}
           </CardFooter>
-          {error && <p className="text-red-500">{error}</p>}
+          
         </Card>
       </TabsContent>
     </Tabs>
