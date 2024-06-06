@@ -40,7 +40,7 @@ export default function AddProduct() {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <div className="flex pt-20 items-start justify-center min-h-screen ">
             <div className="w-full max-w-md p-8 space-y-6 bg-white shadow-md rounded-lg">
                 <h2 className="text-2xl font-bold text-center text-gray-700">Add New Product</h2>
                 <form className="space-y-4" onSubmit={handleSubmit}>

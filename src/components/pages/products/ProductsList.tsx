@@ -1,6 +1,7 @@
-// components/EditProductForm.jsx
+// components/ProductssList.jsx
 import Link from "next/link";
 import Image from "next/image";
+import RemoveBtn from "./RemoveBtn";
 
 const getProducts = async () => {
     try {
@@ -24,7 +25,7 @@ export default async function ProductssList() {
     return (
         <div className="container mx-auto px-4 py-8">
             <div className="justify-between items-center mb-6">
-            <h1 className="mb-4 text-center   mt-4 text-4xl text-slate-700 font-serif font-bold "> All Items </h1>
+                <h1 className="mb-4 text-center mt-4 text-4xl text-slate-700 font-serif font-bold">All Items</h1>
                 <Link href="/addProduct">
                     <button className="px-4 items-end justify-end py-2 font-semibold text-white bg-[#41b981] rounded-md hover:bg-[#398656]">
                         Add Product
@@ -37,9 +38,9 @@ export default async function ProductssList() {
                         <tr>
                             <th className="px-4 py-2 border-b-2 border-gray-300 text-left leading-4 text-[#25523d] tracking-wider">Select</th>
                             <th className="px-4 py-2 border-b-2 border-gray-300 text-left leading-4 text-[#25523d] tracking-wider">Name</th>
-                            <th className="px-4 py-2 border-b-2 border-gray-300 text-left leading-4 text-[#25523d]  tracking-wider">Price</th>
-                            <th className="px-4 py-2 border-b-2 border-gray-300 text-left leading-4 text-[#25523d]  tracking-wider">Category</th>
-                            <th className="px-4 py-2 border-b-2 border-gray-300 text-left leading-4 text-[#25523d]  tracking-wider">Actions</th>
+                            <th className="px-4 py-2 border-b-2 border-gray-300 text-left leading-4 text-[#25523d] tracking-wider">Price</th>
+                            <th className="px-4 py-2 border-b-2 border-gray-300 text-left leading-4 text-[#25523d] tracking-wider">Category</th>
+                            <th className="px-4 py-2 border-b-2 border-gray-300 text-left leading-4 text-[#25523d] tracking-wider">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -50,15 +51,6 @@ export default async function ProductssList() {
                                 </td>
                                 <td className="px-4 py-2 border-b border-gray-300">
                                     <div className="flex items-center">
-                                        <div className="w-12 h-12">
-                                            <Image
-                                                src={product.image || "https://via.placeholder.com/80"}
-                                                
-                                                width={80}
-                                                height={80}
-                                                className="rounded-lg"
-                                            />
-                                        </div>
                                         <div className="ml-4">
                                             <div className="text-sm font-semibold text-gray-700">{product.name}</div>
                                         </div>
@@ -72,9 +64,8 @@ export default async function ProductssList() {
                                             Edit
                                         </button>
                                     </Link>
-                                    <button className="px-4 py-2 font-semibold text-white bg-red-400 rounded-md hover:bg-red-500">
-                                        Delete
-                                    </button>
+                                    
+                                    <RemoveBtn id={product._id} />
                                 </td>
                             </tr>
                         ))}

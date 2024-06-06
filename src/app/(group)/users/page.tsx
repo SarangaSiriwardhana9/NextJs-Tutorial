@@ -67,7 +67,7 @@ export default function Users() {
   
   // Render the component
   return (
-    <div className="flex justify-center items-start h-screen bg-gray-100">
+    <div className="flex justify-center items-start h-screen ">
       <div className="w-full max-w-4xl">
         <h1 className="mb-4 text-center mt-10 text-4xl text-slate-700 font-serif font-bold">
           All Users

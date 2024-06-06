@@ -20,7 +20,7 @@ export default function RemoveBtn({ id }) {
     };
  
     return (
-        <button onClick={removeProduct} className="btn btn-error ml-2">
+        <button onClick={removeProduct} className="px-4 py-2 font-semibold text-white bg-red-400 rounded-md hover:bg-red-500">
             Delete
         </button>
     );
