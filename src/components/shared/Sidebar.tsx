@@ -31,7 +31,7 @@ export default function Sidebar() {
           text: "Add Product",
         },
         {
-          link: "/allProducts",
+          link: "/products",
           icon: <CookingPot />,
           text: "All Products",
         },

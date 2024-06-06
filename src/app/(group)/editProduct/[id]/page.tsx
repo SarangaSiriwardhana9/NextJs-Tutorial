@@ -1,4 +1,4 @@
-//app\editProduct\[id]\page.js
+//app\editProduct\[id]\page.ts
 import EditProductForm from "@/components/pages/products/EditProductForm";
  
 const getProductById = async (id) => {

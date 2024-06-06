@@ -1,4 +1,4 @@
-// app\addProduct\page.jsx
+// app\addProduct\page.tsx
 "use client";
 
 import { useState } from "react";
@@ -89,7 +89,7 @@ export default function AddProduct() {
                     <div>
                         <button
                             type="submit"
-                            className="w-full px-4 py-2 font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            className="w-full px-4 py-2 font-semibold text-white bg-[#4faa7f]  rounded-md hover:bg-[#3d8b67]  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         >
                             Add Product
                         </button>
