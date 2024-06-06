@@ -1,4 +1,6 @@
-'use client'// Import necessary dependencies
+'use client';
+
+// Import necessary dependencies
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
@@ -46,6 +48,23 @@ export default function Users() {
     fetchUsers();
   }, []);
 
+
+  const handleDeleteUser = async (id) => {
+    try {
+      const response = await fetch(`/api/deleteuser/${id}`, { // Make sure the correct route is called
+        method: 'DELETE'
+      });
+      if (response.ok) {
+        // Remove the deleted user from the users state
+        setUsers(users.filter(user => user._id !== id));
+      } else {
+        throw new Error('Failed to delete user');
+      }
+    } catch (error) {
+      console.error('Error deleting user:', error);
+    }
+  };
+  
   // Render the component
   return (
     <div className="flex justify-center items-start h-screen bg-gray-100">
@@ -61,7 +80,7 @@ export default function Users() {
             <p>Loading...</p>
           ) : (
             // Render the UserTable component with the fetched users data
-            <UserTable users={users} />
+            <UserTable users={users} onDelete={handleDeleteUser} />
           )}
         </div>
       </div>

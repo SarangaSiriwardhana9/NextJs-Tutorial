@@ -1,22 +1,11 @@
-// Import necessary dependencies
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { Edit, Trash } from "lucide-react";
+import Link from "next/link";
 
-// Define the UserTable component
-export function UserTable({ users }) {
+export function UserTable({ users, onDelete }) {
   return (
-    <Table className="w-full justify-center items-center border-collapse border border-gray-300">
+    <Table className="w-full border-collapse border border-gray-300">
       <TableHeader>
         <TableRow className="bg-gray-100">
           <TableHead className="w-[100px]">ID</TableHead>
@@ -32,7 +21,7 @@ export function UserTable({ users }) {
             <TableCell>{user._id}</TableCell>
             <TableCell>{user.name}</TableCell>
             <TableCell>{user.email}</TableCell>
-            <TableCell>{user.mobileNo}</TableCell>
+            <TableCell>{user.mobile}</TableCell>
             <TableCell className="text-right pr-4">
               <Button asChild variant="outline" size="sm">
                 <Link href={`/edit/${user._id}`}>
@@ -40,7 +29,7 @@ export function UserTable({ users }) {
                   Edit
                 </Link>
               </Button>
-              <Button variant="outline" size="sm" className="text-red-600 hover:text-red-800">
+              <Button variant="outline" size="sm" className="text-red-600 hover:text-red-800" onClick={() => onDelete(user._id)}>
                 <Trash className="w-4 h-4 mr-1" />
                 Delete
               </Button>
