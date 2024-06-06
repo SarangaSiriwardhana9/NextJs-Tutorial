@@ -1,8 +1,8 @@
-'use client'
-// Import necessary dependencies
+'use client'// Import necessary dependencies
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import { UserTable } from '@/components/pages/users/UserTable';
 
 // Define the Users component
 export default function Users() {
@@ -48,26 +48,22 @@ export default function Users() {
 
   // Render the component
   return (
-    <div className="   ">
-      <h1 className="mb-4 text-center   mt-10 text-4xl text-slate-700 font-serif font-bold ">
-        All Users
-      </h1>
+    <div className="flex justify-center items-start h-screen bg-gray-100">
       <div className="w-full max-w-4xl">
-        {/* Check if there is an error */}
-        {error && <p>Error: {error}</p>}
-        {/* Check if the data is still loading */}
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          // Render the list of users
-          <ul>
-            {users.map(user => (
-              <li key={user._id} className="flex items-center justify-between p-4 border-b border-gray-200">
-                
-              </li>
-            ))}
-          </ul>
-        )}
+        <h1 className="mb-4 text-center mt-10 text-4xl text-slate-700 font-serif font-bold">
+          All Users
+        </h1>
+        <div className="w-full flex justify-center">
+          {/* Check if there is an error */}
+          {error && <p>Error: {error}</p>}
+          {/* Check if the data is still loading */}
+          {loading ? (
+            <p>Loading...</p>
+          ) : (
+            // Render the UserTable component with the fetched users data
+            <UserTable users={users} />
+          )}
+        </div>
       </div>
     </div>
   );
